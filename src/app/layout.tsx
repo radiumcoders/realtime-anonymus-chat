@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${jetbrainsMono.variable} antialiased dar`}>
+      <body className={`${jetbrainsMono.variable} antialiased dark`}>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
