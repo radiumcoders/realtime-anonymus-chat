@@ -8,15 +8,15 @@ import { useEffect, useState } from "react";
 import { RotateCw } from "lucide-react";
 
 //store some of the nice usernames in array
-const USERCHAN = ["mango", "penguin", "owl", "cat", "lion"];
+const USER_ARRAY = ["mango", "penguin", "owl", "cat", "lion"];
 // key that will be used to store the username,refreshed in the local storage
 const STORAGE_KEY = "username";
 
 function generateRandomUsername() {
-  //select a random index form the USERCHAN array :]
-  const random_index = Math.floor(Math.random() * USERCHAN.length);
+  //select a random index form the USER_ARRAY array :]
+  const random_index = Math.floor(Math.random() * USER_ARRAY.length);
   //generate a random username with a random id of length 2
-  const username = `anonymous-${USERCHAN[random_index]}-${nanoid(2)}`;
+  const username = `anonymous-${USER_ARRAY[random_index]}-${nanoid(2)}`;
   return username;
 }
 
@@ -48,7 +48,13 @@ export default function Home() {
     main();
   }, []);
   return (
-    <main className="min-h-screen flex justify-center items-center w-full bg-background">
+    <main className="min-h-screen flex flex-col gap-4 justify-center items-center w-full bg-background">
+      <div className="flex flex-col gap-3 justify-center items-center">
+        <h1 className="font-bold text-xl text-center text-green-500">
+          {"> "}Welcome to Secure Room
+        </h1>
+        <p className="text-stone-500 text-sm">self destructive private chat room.</p>
+      </div>
       {/* outer most box */}
       <div className="bg-primary/5 border border-primary/10 p-4 gap-5 justify-center flex flex-col rounded-xs ">
         <div className="flex flex-col gap-3">
@@ -79,11 +85,9 @@ export default function Home() {
         <Button className="uppercase rounded-xs shadow-2xl selection:bg-background selection:text-primary">
           create secure room
         </Button>
-        {refreshed > 0 && (
-          <p className="text-sm text-primary/50 text-center">
-            {3 - refreshed} Username refreshes.
-          </p>
-        )}
+        <p className="text-sm text-primary/50 text-center">
+          {3 - refreshed} Username refreshes.
+        </p>
       </div>
     </main>
   );
