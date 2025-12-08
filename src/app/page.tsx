@@ -11,7 +11,6 @@ import { RotateCw } from "lucide-react";
 const USERCHAN = ["mango", "penguin", "owl", "cat", "lion"];
 // key that will be used to store the username,refreshed in the local storage
 const STORAGE_KEY = "username";
-const REFRESH_KEY = "refreshed";
 
 function generateRandomUsername() {
   //select a random index form the USERCHAN array :]
@@ -36,21 +35,14 @@ export default function Home() {
     function main() {
       //check if the username is already stored in the local storage
       const stored = localStorage.getItem(STORAGE_KEY);
-      const refreshed = localStorage.getItem(REFRESH_KEY);
       if (stored) {
         //set the username from the local storage is exists and return :]
         setUsername(stored);
-        return;
-      }
-      if (refreshed) {
-        setRefreshed(parseInt(refreshed));
-        return;
       }
       //generate a new username and store it to localstorage ;]
       const generated = generateRandomUsername();
       localStorage.setItem(STORAGE_KEY, generated);
       setUsername(generated);
-      localStorage.setItem(REFRESH_KEY, "0");
     }
 
     main();
@@ -58,7 +50,7 @@ export default function Home() {
   return (
     <main className="min-h-screen flex justify-center items-center w-full bg-background">
       {/* outer most box */}
-      <div className="bg-primary/5 border border-primary/10 p-4 gap-5 justify-center flex flex-col rounded-xs">
+      <div className="bg-primary/5 border border-primary/10 p-4 gap-5 justify-center flex flex-col rounded-xs ">
         <div className="flex flex-col gap-3">
           <Label className="text-primary/30 font-light">Your Identity</Label>
           <div className="flex gap-2 w-full">
@@ -71,11 +63,9 @@ export default function Home() {
             <Button
               onClick={() => {
                 if (refreshed >= 3) return;
-                setRefreshed(refreshed + 1);
                 const new_username = refreshedUsername();
                 setUsername(new_username);
-                localStorage.setItem(STORAGE_KEY, new_username);
-                localStorage.setItem(REFRESH_KEY, (refreshed + 1).toString());
+                setRefreshed((prev) => prev + 1);
                 console.log("refreshed", refreshed);
               }}
               disabled={refreshed >= 3}
