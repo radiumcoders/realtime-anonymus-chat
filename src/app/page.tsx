@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";
 import { RotateCw } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { client } from "@/lib/client";
 
 //store some of the nice usernames in array
 const USER_ARRAY = ["mango", "penguin", "owl", "cat", "lion"];
@@ -47,13 +49,22 @@ export default function Home() {
 
     main();
   }, []);
+
+  const { mutate: CreateRoom } = useMutation({
+    mutationFn: async () => {
+      const response = await client.room.create.post();
+    },
+  });
+
   return (
     <main className="min-h-screen flex flex-col gap-4 justify-center items-center w-full bg-background">
       <div className="flex flex-col gap-3 justify-center items-center">
         <h1 className="font-bold text-xl text-center text-green-500">
           {"> "}Welcome to Secure Room
         </h1>
-        <p className="text-stone-500 text-sm">self destructive private chat room.</p>
+        <p className="text-stone-500 text-sm">
+          self destructive private chat room.
+        </p>
       </div>
       {/* outer most box */}
       <div className="bg-primary/5 border border-primary/10 p-4 gap-5 justify-center flex flex-col rounded-xs ">
@@ -82,7 +93,10 @@ export default function Home() {
             </Button>
           </div>
         </div>
-        <Button className="uppercase rounded-xs shadow-2xl selection:bg-background selection:text-primary">
+        <Button
+          onClick={() => CreateRoom()}
+          className="uppercase rounded-xs shadow-2xl selection:bg-background selection:text-primary"
+        >
           create secure room
         </Button>
         <p className="text-sm text-primary/50 text-center">
