@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { RotateCw } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { client } from "@/lib/client";
+import { useRouter } from "next/navigation";
 
 //store some of the nice usernames in array
 const USER_ARRAY = ["mango", "penguin", "owl", "cat", "lion"];
@@ -18,7 +19,7 @@ function generateRandomUsername() {
   //select a random index form the USER_ARRAY array :]
   const random_index = Math.floor(Math.random() * USER_ARRAY.length);
   //generate a random username with a random id of length 2
-  const username = `anonymous-${USER_ARRAY[random_index]}-${nanoid(2)}`;
+  const username = `anonymous-${USER_ARRAY[random_index]}-${nanoid(4)}`;
   return username;
 }
 
@@ -50,9 +51,17 @@ export default function Home() {
     main();
   }, []);
 
+  const router = useRouter();
+
   const { mutate: CreateRoom } = useMutation({
     mutationFn: async () => {
-      const response = await client.room.create.post();
+      const res = await client.room.create.post();
+
+      if (res.status === 200) {
+        //if the room is created successfully navigate to the room page
+        router.push(`/room/${res.data?.roomId}`);
+      }
+
     },
   });
 
